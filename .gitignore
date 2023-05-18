@@ -1,4 +1,12 @@
 # Project exclude paths
-/main_bz/target/
+
+# Others
+*.log
+target/
 /logs/
-/.idea/
+**/hikariPool.properties
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
