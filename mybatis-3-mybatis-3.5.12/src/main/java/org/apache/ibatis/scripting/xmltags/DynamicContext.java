@@ -116,7 +116,7 @@ public class DynamicContext {
     public Object getProperty(Map context, Object target, Object name) {
       Map map = (Map) target;
 
-      //先直接取（拼接过程中产生的临时变量：比如循环）
+      //先直接取（拼接过程中产生的临时变量：比如循环foreach标签）
       Object result = map.get(name);
       if (map.containsKey(name) || result != null) {
         return result;
