@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.emperorws.mapper.TestMapper">
+  <resultMap id="BaseResultMap" type="club.emperorws.entities.Student">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="pwd" jdbcType="VARCHAR" property="pwd" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, pwd, sex, birthday, address, email
+  </sql>
+
+  <select id="selectList" parameterType="club.emperorws.entities.Student" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from student
+    <where>
+      <if test="student.name != null and student.name != ''">and name like concat('%', #{student.name}, '%')</if>
+      <if test="student.sex != null and student.sex != ''">and sex = #{student.sex}</if>
+      <if test="student.email != null and student.email != ''">and email like concat('%', #{student.email}, '%')</if>
+      <if test="student.address != null and student.address != ''">and address like concat('%', '${student.address}', '%')</if>
+    </where>
+  </select>
+
+  <select id="selectListNoName" parameterType="club.emperorws.entities.Student" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from student
+    <where>
+      <if test="name != null and name != ''">and name like concat('%', #{name}, '%')</if>
+      <if test="sex != null and sex != ''">and sex = #{sex}</if>
+      <if test="email != null and email != ''">and email like concat('%', #{email}, '%')</if>
+      <if test="address != null and address != ''">and address like concat('%', '${address}', '%')</if>
+    </where>
+  </select>
+  <select id="selectOne" parameterType="club.emperorws.entities.Student" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from student
+    limit 1
+  </select>
+  <select id="selectMapList" parameterType="club.emperorws.entities.Student" resultType="java.util.Map">
+    select
+    <include refid="Base_Column_List" />
+    from student
+  </select>
+</mapper>

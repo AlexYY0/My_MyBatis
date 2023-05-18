@@ -1,0 +1,4 @@
+# Project exclude paths
+/main_bz/target/
+/logs/
+/.idea/
