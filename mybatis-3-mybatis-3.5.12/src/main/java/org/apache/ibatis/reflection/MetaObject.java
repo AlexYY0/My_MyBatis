@@ -120,6 +120,13 @@ public class MetaObject {
     }
   }
 
+  /**
+   * 这里有点问题
+   * <p>我们无法setValue：richList[0].richField</p>
+   * <p>原作者说：MetaObject is one of the internal classes that are designed to support actual MyBatis usages.
+   * If we improve internal classes to support unnecessary use cases, they will get more complex and become slower, so we should avoid it.</p>
+   * @see https://github.com/mybatis/mybatis-3/issues/1851
+   */
   public void setValue(String name, Object value) {
     PropertyTokenizer prop = new PropertyTokenizer(name);
     if (prop.hasNext()) {

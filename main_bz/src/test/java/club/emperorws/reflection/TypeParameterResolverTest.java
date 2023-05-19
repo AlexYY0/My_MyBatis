@@ -177,6 +177,19 @@ class TypeParameterResolverTest {
     }
 
     @Test
+    void testReturn_Lv1ArrayOfType() throws Exception {
+        Class<?> clazz = Level1Mapper.class;
+        Method method = clazz.getMethod("selectCalculatorArray");
+        Type result = TypeParameterResolver.resolveReturnType(method, clazz);
+        assertTrue(result instanceof GenericArrayType);
+        GenericArrayType resultGenericArrayType = (GenericArrayType) result;
+        Type genericComponentType = resultGenericArrayType.getGenericComponentType();
+        assertTrue(genericComponentType instanceof ParameterizedType);
+        assertEquals(((ParameterizedType) genericComponentType).getActualTypeArguments()[0] , String.class);
+        assertEquals( ((ParameterizedType) genericComponentType).getRawType() , Calculator.class);
+    }
+
+    @Test
     void testReturn_Lv0InnerClass() throws Exception {
         Class<?> clazz = Level0InnerMapper.class;
         Method method = clazz.getMethod("select", Object.class);

@@ -15,16 +15,16 @@
  */
 package org.apache.ibatis.reflection.wrapper;
 
-import java.util.List;
-
-import org.apache.ibatis.reflection.ExceptionUtil;
-import org.apache.ibatis.reflection.MetaClass;
-import org.apache.ibatis.reflection.MetaObject;
-import org.apache.ibatis.reflection.ReflectionException;
-import org.apache.ibatis.reflection.SystemMetaObject;
+import org.apache.ibatis.reflection.*;
 import org.apache.ibatis.reflection.factory.ObjectFactory;
 import org.apache.ibatis.reflection.invoker.Invoker;
 import org.apache.ibatis.reflection.property.PropertyTokenizer;
+
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Clinton Begin
@@ -138,6 +138,46 @@ public class BeanWrapper extends BaseWrapper {
     }
   }
 
+  /**
+   * 这里有点问题
+   * <p>我们无法setValue：richList[0].richField</p>
+   * <p>原作者说：MetaObject is one of the internal classes that are designed to support actual MyBatis usages.
+   * If we improve internal classes to support unnecessary use cases, they will get more complex and become slower, so we should avoid it.
+   * 【意思就是说，不要过度设计，如果没有使用场景，就不要搞】</p>
+   *
+   *
+   * <b>可能改进的方式</b>
+   * <pre>
+   *   public MetaObject instantiatePropertyValue(String name, PropertyTokenizer prop, ObjectFactory objectFactory) {
+   *     MetaObject metaValue;
+   *     Class<?> type = getSetterType(prop.getName());
+   *     if (prop.getIndex() != null && Collection.class.isAssignableFrom(type)) {
+   *       Type returnType = metaClass.getGenericGetterType(prop.getName());
+   *       if (returnType instanceof ParameterizedType) {
+   *         Type[] actualTypeArguments = ((ParameterizedType) returnType).getActualTypeArguments();
+   *         if (actualTypeArguments != null && actualTypeArguments.length == 1) {
+   *           returnType = actualTypeArguments[0];
+   *           if (returnType instanceof Class) {
+   *             type = (Class<?>) returnType;
+   *           } else if (returnType instanceof ParameterizedType) {
+   *             type = (Class<?>) ((ParameterizedType) returnType).getRawType();
+   *           }
+   *         }
+   *       }
+   *     }
+   *     //还有数组......
+   *     try {
+   *       Object newObject = objectFactory.create(type);
+   *       metaValue = MetaObject.forObject(newObject, metaObject.getObjectFactory(), metaObject.getObjectWrapperFactory(), metaObject.getReflectorFactory());
+   *       set(prop, newObject);
+   *     } catch (Exception e) {
+   *       throw new ReflectionException("Cannot set value of property '" + name + "' because '" + name + "' is null and cannot be instantiated on instance of " + type.getName() + ". Cause:" + e.toString(), e);
+   *     }
+   *     return metaValue;
+   *   }
+   * </pre>
+   * @see https://github.com/mybatis/mybatis-3/issues/1851
+   */
   @Override
   public MetaObject instantiatePropertyValue(String name, PropertyTokenizer prop, ObjectFactory objectFactory) {
     MetaObject metaValue;

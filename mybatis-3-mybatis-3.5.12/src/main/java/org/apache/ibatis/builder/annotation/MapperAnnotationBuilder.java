@@ -412,6 +412,7 @@ public class MapperAnnotationBuilder {
     Type resolvedReturnType = TypeParameterResolver.resolveReturnType(method, type);
     if (resolvedReturnType instanceof Class) {
       returnType = (Class<?>) resolvedReturnType;
+      //返回结果是数组
       if (returnType.isArray()) {
         returnType = returnType.getComponentType();
       }
@@ -437,7 +438,7 @@ public class MapperAnnotationBuilder {
           } else if (returnTypeParameter instanceof GenericArrayType) {
             Class<?> componentType = (Class<?>) ((GenericArrayType) returnTypeParameter).getGenericComponentType();
             // (gcode issue #525) support List<byte[]>
-            //支持行数据存储为数据
+            //支持行数据存储为数组，但是注意仅仅为byte[]（Byte[]）数组-->通过createPrimitiveResultObject的方式创建数组，本质上是一列结果转为byte[]（Byte[]）数组
             returnType = Array.newInstance(componentType, 0).getClass();
           }
         }

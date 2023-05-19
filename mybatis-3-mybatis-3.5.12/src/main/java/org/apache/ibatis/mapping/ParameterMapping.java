@@ -36,6 +36,9 @@ public class ParameterMapping {
    */
   private Class<?> javaType = Object.class;
   private JdbcType jdbcType;
+  /**
+   * 对于一些需要保留精度的数值类型参数，可以为其添加保留小数点位数的设置，可以添加 numericScale 属性，为该参数设置小数点保留的位数
+   */
   private Integer numericScale;
   private TypeHandler<?> typeHandler;
   private String resultMapId;

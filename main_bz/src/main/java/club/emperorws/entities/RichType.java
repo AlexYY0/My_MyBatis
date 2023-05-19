@@ -35,9 +35,15 @@ public class RichType<T> {
   private List<RichType<String>> richList = new ArrayList() {
     private static final long serialVersionUID = 1L;
     {
-      add(new RichType<String>("aaa"));
+      //add(new RichTypeSon());
+      add(null);
     }
   };
+
+  private RichType<String>[] richArray = new RichType[]{null};
+
+  public RichType() {
+  }
 
   public RichType(T tester) {
     this.tester = tester;

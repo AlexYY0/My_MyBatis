@@ -594,6 +594,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
           }
           propertyName = columnName.substring(columnPrefix.length());
         }
+        //如果metaObject是List，这里及以下会抛出异常
         final String property = metaObject.findProperty(propertyName, configuration.isMapUnderscoreToCamelCase());
         if (property != null && metaObject.hasSetter(property)) {
           if (resultMap.getMappedProperties().contains(property)) {

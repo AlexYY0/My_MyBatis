@@ -1,6 +1,7 @@
 package club.emperorws.mapper;
 
 import club.emperorws.entities.Student;
+import club.emperorws.entities.StudentType;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,19 @@ public interface TestMapper {
 
     List<Student> selectListNoName(Student student);
 
+    <T> List<T> selectListUseType(Student student);
+
+    //不支持
+    List<List<String>> selectListUseList(Student student);
+
+    //无法初始化创建数组
+    List<String[]> selectListUseArray(Student student);
+
     List<Student> selectList(String test);
+
+    StudentType<String>[] selectTypeList(Student student);
+
+    StudentType[] selectNoTypeList(Student student);
 
     <T> T selectOne(@Param("student") Student student);
 

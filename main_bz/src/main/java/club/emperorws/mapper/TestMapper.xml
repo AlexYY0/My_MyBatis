@@ -25,7 +25,6 @@
       <if test="student.address != null and student.address != ''">and address like concat('%', '${student.address}', '%')</if>
     </where>
   </select>
-
   <select id="selectListNoName" parameterType="club.emperorws.entities.Student" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -37,6 +36,62 @@
       <if test="address != null and address != ''">and address like concat('%', '${address}', '%')</if>
     </where>
   </select>
+  <select id="selectListUseType" parameterType="club.emperorws.entities.Student" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from student
+    <where>
+      <if test="name != null and name != ''">and name like concat('%', #{name}, '%')</if>
+      <if test="sex != null and sex != ''">and sex = #{sex}</if>
+      <if test="email != null and email != ''">and email like concat('%', #{email}, '%')</if>
+      <if test="address != null and address != ''">and address like concat('%', '${address}', '%')</if>
+    </where>
+  </select>
+  <select id="selectListUseList" parameterType="club.emperorws.entities.Student">
+    select
+    id '[0]', name '[1]', pwd '[2]', sex '[3]', birthday '[4]', address '[5]', email '[6]'
+    from student
+    <where>
+      <if test="name != null and name != ''">and name like concat('%', #{name}, '%')</if>
+      <if test="sex != null and sex != ''">and sex = #{sex}</if>
+      <if test="email != null and email != ''">and email like concat('%', #{email}, '%')</if>
+      <if test="address != null and address != ''">and address like concat('%', '${address}', '%')</if>
+    </where>
+  </select>
+  <select id="selectListUseArray" parameterType="club.emperorws.entities.Student">
+    select
+    <include refid="Base_Column_List" />
+    from student
+    <where>
+      <if test="name != null and name != ''">and name like concat('%', #{name}, '%')</if>
+      <if test="sex != null and sex != ''">and sex = #{sex}</if>
+      <if test="email != null and email != ''">and email like concat('%', #{email}, '%')</if>
+      <if test="address != null and address != ''">and address like concat('%', '${address}', '%')</if>
+    </where>
+  </select>
+  <select id="selectTypeList" parameterType="club.emperorws.entities.Student">
+    select
+    <include refid="Base_Column_List" />
+    from student
+    <where>
+      <if test="name != null and name != ''">and name like concat('%', #{name}, '%')</if>
+      <if test="sex != null and sex != ''">and sex = #{sex}</if>
+      <if test="email != null and email != ''">and email like concat('%', #{email}, '%')</if>
+      <if test="address != null and address != ''">and address like concat('%', '${address}', '%')</if>
+    </where>
+  </select>
+  <select id="selectNoTypeList" parameterType="club.emperorws.entities.Student">
+    select
+    <include refid="Base_Column_List" />
+    from student
+    <where>
+      <if test="name != null and name != ''">and name like concat('%', #{name}, '%')</if>
+      <if test="sex != null and sex != ''">and sex = #{sex}</if>
+      <if test="email != null and email != ''">and email like concat('%', #{email}, '%')</if>
+      <if test="address != null and address != ''">and address like concat('%', '${address}', '%')</if>
+    </where>
+  </select>
+
   <select id="selectOne" parameterType="club.emperorws.entities.Student" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

@@ -56,6 +56,8 @@ public interface Level0Mapper<L, M, N> {
 
   List<Calculator<L>> selectCalculatorList();
 
+  Calculator<N>[] selectCalculatorArray();
+
   interface Level0InnerMapper extends Level0Mapper<String, Long, Float> {
   }
 

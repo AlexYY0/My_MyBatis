@@ -163,10 +163,13 @@ public class MapperMethod {
       result = sqlSession.selectList(command.getName(), param);
     }
     // issue #510 Collections & arrays support
+    //返回结果有可能不是List，有可能是数组、其他类型的List或迭代器等等
     if (!method.getReturnType().isAssignableFrom(result.getClass())) {
       if (method.getReturnType().isArray()) {
+        //转化为数组
         return convertToArray(result);
       }
+      //转化为对应的其他类型的集合
       return convertToDeclaredCollection(sqlSession.getConfiguration(), result);
     }
     return result;
@@ -195,9 +198,11 @@ public class MapperMethod {
   private <E> Object convertToArray(List<E> list) {
     Class<?> arrayComponentType = method.getReturnType().getComponentType();
     Object array = Array.newInstance(arrayComponentType, list.size());
+    //不是基本的类型，直接转化
     if (!arrayComponentType.isPrimitive()) {
       return list.toArray((E[]) array);
     }
+    //否则一个一个设值
     for (int i = 0; i < list.size(); i++) {
       Array.set(array, i, list.get(i));
     }
