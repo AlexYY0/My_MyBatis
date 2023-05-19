@@ -23,6 +23,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -54,15 +55,15 @@ public class BzMain {
             for (List<String> studentStr : studentStrList) {
                 logger.info("studentList is :{}", studentStr);
             }*/
-            /*List<String[]> studentStrList = mapper.selectListUseArray(new Student("al","c"));
-            for (String[] studentStr : studentStrList) {
-                logger.info("studentList is :{}", studentStr);
-            }*/
+            List<String[]> studentStrList = mapper.selectListUseArray(new Student("al","c"));
+            for (Object[] studentStr : studentStrList) {
+                logger.info("studentList is :{}", Arrays.toString(studentStr));
+            }
             //StudentType<String>[] studentTypeList = mapper.selectTypeList(new Student("al","c"));
-            StudentType[] studentTypeList = mapper.selectNoTypeList(new Student("al","c"));
+            /*StudentType[] studentTypeList = mapper.selectNoTypeList(new Student("al","c"));
             for (StudentType studentType : studentTypeList) {
                 logger.info("studentList is :{}", studentType);
-            }
+            }*/
             //test
             ReflectorFactory reflectorFactory = new DefaultReflectorFactory();
             MetaClass meta = MetaClass.forClass(RichType.class, reflectorFactory);
@@ -72,6 +73,13 @@ public class BzMain {
             System.out.println(getterType);
             MetaClass arr = MetaClass.forClass(String[].class, reflectorFactory);
             System.out.println("arr.hasGetter(\"[0]\")=" + arr.hasGetter("[0]"));
+
+            List<RichType> richTypeList = new ArrayList<>();
+            richTypeList.add(new RichType("1"));
+            richTypeList.add(new RichType("2"));
+            richTypeList.add(new RichType("3"));
+            MetaObject richTypeListMetaObject = sessionFactory.getConfiguration().newMetaObject(richTypeList);
+            System.out.println("[0].richField = " + richTypeListMetaObject.getValue("[0].richField"));
 
             RichType<String> richType = new RichType<>();
             MetaObject richTypeMetaObject = sessionFactory.getConfiguration().newMetaObject(richType);

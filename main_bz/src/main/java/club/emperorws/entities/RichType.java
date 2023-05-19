@@ -45,6 +45,10 @@ public class RichType<T> {
   public RichType() {
   }
 
+  public RichType(String richField) {
+    this.richField = richField;
+  }
+
   public RichType(T tester) {
     this.tester = tester;
   }

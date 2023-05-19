@@ -60,7 +60,7 @@
   </select>
   <select id="selectListUseArray" parameterType="club.emperorws.entities.Student">
     select
-    <include refid="Base_Column_List" />
+    id '[0]', name '[1]', pwd '[2]', sex '[3]', birthday '[4]', address '[5]', email '[6]'
     from student
     <where>
       <if test="name != null and name != ''">and name like concat('%', #{name}, '%')</if>
